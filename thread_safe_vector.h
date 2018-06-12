@@ -98,7 +98,7 @@ Vector<T>::Vector(std::initializer_list<T> list) {
   m_capacity = 1 << _bit;
   m_buffer = new T[m_capacity];
   int i = 0;
-  for(auto value : list) 
+  for(auto &value : list) 
     m_buffer[i++] = value;
 }
 
@@ -140,7 +140,8 @@ void Vector<T>::pop_back() {
   std::lock_guard<std::mutex> lck(m_mutex);
   if (m_size == 0)
     throw std::out_of_range("pop_back from a empty vector!");
-  m_size--;
+  --m_size;
+  m_buffer[m_size].~T();
 }
 
 template<class T>
